@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Brand Colors (Solid & Minimal) ──────────────── */
+  --color-brand-teal:         #005f73;
+  --color-brand-teal-light:   #eef6f8;
+  --color-brand-coral:        #f95738;
+  --color-brand-coral-light:  #fff5f2;
+
+  /* ── State & Feedback Colors ────────────────────── */
+  --color-state-success:      #10b981;
+
+  /* ── Surface Colors ─────────────────────────────── */
+  --color-surface-base:     #f8fafc;
+  --color-surface-card:     #ffffff;
+  --color-surface-elevated: #f1f5f9;
+  --color-surface-muted:    #f8fafc;
+
+  /* ── Text Colors ────────────────────────────────── */
+  --color-text-primary:   #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted:     #94a3b8;
+
+  /* ── Border Colors ──────────────────────────────── */
+  --color-border-default: #e2e8f0;
+  --color-border-focus:   #005f73;
+  --color-border-strong:  #cbd5e1;
+
+  /* ── Fonts ──────────────────────────────────────── */
+  --font-montserrat: var(--font-montserrat), 'Montserrat', sans-serif;
+  --font-inter:      var(--font-inter), 'Inter', sans-serif;
+  --font-mono:       var(--font-mono), 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-surface-base);
+    color: var(--color-text-primary);
+    font-family: var(--font-inter);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-montserrat);
+    color: var(--color-text-primary);
+    line-height: 1.2;
+  }
+
+  /* ── Custom Scrollbar ───────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+  /* ── Text Selection ─────────────────────────────── */
+  ::selection {
+    background-color: rgba(0, 95, 115, 0.12);
+    color: #005f73;
+  }
+
+  /* ── Focus outline ──────────────────────────────── */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-teal);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* ── Solid Text Classes (Replacements for Gradients) ─ */
+  .text-gradient-brand {
+    color: var(--color-brand-teal);
+  }
+
+  .text-gradient-coral {
+    color: var(--color-brand-coral);
+  }
+
+  /* ── Card Styles ────────────────────────────────── */
+  .card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 4px 12px rgba(0,0,0,0.02);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .card-hover:hover {
+    border-color: rgba(0, 95, 115, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 95, 115, 0.05);
+    transform: translateY(-1px);
+  }
+
+  /* ── Glow Effects (Flat Outline Focus instead of Glow) ── */
+  .glow-teal {
+    box-shadow: 0 0 0 1px rgba(0, 95, 115, 0.1);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.05);
+  }
+
+  /* ── Solid Backgrounds ──────────────────────────── */
+  .bg-gradient-brand {
+    background-color: var(--color-brand-teal);
+  }
+
+  .bg-gradient-coral {
+    background-color: var(--color-brand-coral);
+  }
+
+  .bg-gradient-hero {
+    background-color: var(--color-surface-base);
+  }
+
+  /* ── Solid Button Primary ────────────────────────── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-family: var(--font-inter);
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+    background-color: var(--color-brand-teal);
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 6px rgba(0,95,115,0.1);
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  .btn-primary:hover {
+    background-color: #004d5e;
+    box-shadow: 0 4px 12px rgba(0,95,115,0.2);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,95,115,0.1);
+  }
+
+  /* ── Solid Button Coral ──────────────────────────── */
+  .btn-coral {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-family: var(--font-inter);
+    font-weight: 700;
+    font-size: 14px;
+    color: white;
+    background-color: var(--color-brand-coral);
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 6px rgba(249,87,56,0.1);
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  .btn-coral:hover {
+    background-color: #e04426;
+    box-shadow: 0 4px 12px rgba(249,87,56,0.2);
+    transform: translateY(-1px);
+  }
+
+  .btn-coral:active {
+    transform: translateY(0);
+  }
+}
