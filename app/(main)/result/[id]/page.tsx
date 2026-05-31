@@ -12,6 +12,7 @@ import TimingCard from "@/components/result/TimingCard";
 import Link from "next/link";
 import { auth } from "@/lib/firebase";
 import { useToast } from "@/components/ui/Toast";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
 
 export default function ResultPage() {
   const params = useParams();
@@ -20,7 +21,7 @@ export default function ResultPage() {
 
   const [data, setData] = useState<GenerationDocument | null>(null);
   const [loading, setLoading] = useState(!!auth);
-  const [error, setError] = useState(!auth ? "Firebase Auth belum diinisialisasi. Periksa berkas .env.local Anda." : "");
+  const [error, setError] = useState(!auth ? "Tidak dapat memuat data. Silakan coba lagi." : "");
 
   useEffect(() => {
     if (!id) return;
@@ -28,7 +29,7 @@ export default function ResultPage() {
     // Trigger toast if navigated from a successful generation
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.get("success") === "true") {
-      showToast("Strategi Konten Berhasil Dibuat! 🔥", "success");
+      showToast("Strategi Konten Berhasil Dibuat!", "success");
       // Clean up the URL parameter gracefully
       window.history.replaceState(null, "", window.location.pathname);
     }
@@ -61,10 +62,7 @@ export default function ResultPage() {
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f8f9fa]">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-full bg-[var(--color-brand-teal)]/10 animate-ping duration-1000" />
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[var(--color-brand-teal)] relative z-10"></div>
-        </div>
+        <LoadingSpinner size="lg" />
       </div>
     );
   }
@@ -76,7 +74,7 @@ export default function ResultPage() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
         </svg>
         <h2 className="text-2xl font-bold text-gray-900 mb-2 font-['Montserrat']">{error || "Terjadi kesalahan"}</h2>
-        <p className="text-gray-500 mb-8 text-sm">Gagal memuat data dari server Firebase.</p>
+        <p className="text-gray-500 mb-8 text-sm">Silakan coba muat ulang halaman.</p>
         <Link 
           href="/generate" 
           className="px-6 py-3 bg-[var(--color-brand-teal)] text-white font-semibold rounded-xl hover:shadow-[0_4px_12px_rgba(0,103,125,0.2)] active:scale-95 transition-all text-sm"

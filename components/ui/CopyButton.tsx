@@ -11,7 +11,7 @@ export default function CopyButton({ text, className = "" }: { text: string, cla
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      showToast("Teks berhasil disalin ke clipboard! 📋", "info");
+      showToast("Teks berhasil disalin ke clipboard!", "info");
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy text", err);

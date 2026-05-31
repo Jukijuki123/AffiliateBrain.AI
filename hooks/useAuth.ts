@@ -5,12 +5,11 @@ import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!auth);
 
   useEffect(() => {
     if (!auth) {
       console.warn("Firebase Auth is not initialized. Please verify your environment variables in .env.local");
-      setLoading(false);
       return;
     }
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {

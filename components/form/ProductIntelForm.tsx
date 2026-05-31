@@ -4,6 +4,7 @@ import { ProductIntelInput, ProductCategory } from "@/lib/types";
 import CategorySelect from "./CategorySelect";
 import ReviewKeywordsInput from "./ReviewKeywordsInput";
 import MarketplaceSelect from "./MarketplaceSelect";
+import { Star } from "lucide-react";
 
 interface ProductIntelFormProps {
   onSubmit: (data: ProductIntelInput) => void;
@@ -153,7 +154,7 @@ export default function ProductIntelForm({ onSubmit, isGenerating }: ProductInte
               className="w-full accent-[var(--color-brand-teal)] h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer"
             />
             <span className="text-sm font-extrabold text-[var(--color-brand-teal)] bg-[var(--color-brand-teal)]/10 px-3 py-1.5 rounded-xl border border-[var(--color-brand-teal)]/20 shrink-0 font-sans">
-              ⭐️ {rating !== undefined ? rating.toFixed(1) : "Pilih"}
+              <Star className="w-4 h-4 text-amber-500 fill-amber-500 inline" /> {rating !== undefined ? rating.toFixed(1) : "Pilih"}
             </span>
           </div>
         </div>

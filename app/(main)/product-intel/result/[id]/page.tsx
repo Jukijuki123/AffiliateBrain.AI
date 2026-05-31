@@ -8,6 +8,7 @@ import { ProductIntelDocument } from "@/lib/types";
 import ProductIntelSection from "@/components/result/ProductIntelSection";
 import Link from "next/link";
 import { useToast } from "@/components/ui/Toast";
+import { Brain, FolderOpen, ShoppingCart, BadgeDollarSign, Star } from "lucide-react";
 
 export default function ProductIntelResultPage() {
   const params = useParams();
@@ -24,7 +25,7 @@ export default function ProductIntelResultPage() {
     // Trigger toast if navigated from a successful generation
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.get("success") === "true") {
-      showToast("Analisis Kecerdasan Produk Berhasil Dibuat! 🧠🔥", "success");
+      showToast("Analisis Kecerdasan Produk Berhasil Dibuat!", "success");
       // Clean up the URL parameter gracefully
       window.history.replaceState(null, "", window.location.pathname);
     }
@@ -179,28 +180,28 @@ export default function ProductIntelResultPage() {
         
         <div className="flex flex-col gap-3.5 relative z-10 flex-1">
           <span className="text-[10px] font-bold text-white bg-[var(--color-brand-teal)] px-2.5 py-0.5 rounded-full uppercase tracking-wider font-sans self-start">
-            Laporan Intelijen Produk Sukses 🧠
+            Laporan Intelijen Produk Sukses <Brain className="w-3.5 h-3.5 inline" />
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold font-['Montserrat'] text-gray-900 leading-tight">
             {data.title}
           </h1>
           <div className="flex flex-wrap gap-2.5 items-center text-xs">
             <span className="bg-[var(--color-brand-teal)]/10 text-[var(--color-brand-teal)] font-bold px-3 py-1 rounded-lg border border-[var(--color-brand-teal)]/15">
-              📁 {categoryLabels[data.category] || data.category}
+              <FolderOpen className="w-3.5 h-3.5 inline" /> {categoryLabels[data.category] || data.category}
             </span>
             {data.marketplace && (
               <span className="bg-orange-50 text-orange-700 font-bold px-3 py-1 rounded-lg border border-orange-100">
-                🛒 {data.marketplace}
+                <ShoppingCart className="w-3.5 h-3.5 inline" /> {data.marketplace}
               </span>
             )}
             {data.price && (
               <span className="bg-emerald-50 text-emerald-700 font-bold px-3 py-1 rounded-lg border border-emerald-100">
-                💰 Rp{data.price.replace(/^Rp/i, "")}
+                <BadgeDollarSign className="w-3.5 h-3.5 inline" /> Rp{data.price.replace(/^Rp/i, "")}
               </span>
             )}
             {data.rating !== null && (
               <span className="bg-amber-50 text-amber-700 font-bold px-3 py-1 rounded-lg border border-amber-100">
-                ⭐️ {data.rating.toFixed(1)} / 5.0
+                <Star className="w-3.5 h-3.5 inline text-amber-500 fill-amber-500" /> {data.rating.toFixed(1)} / 5.0
               </span>
             )}
           </div>

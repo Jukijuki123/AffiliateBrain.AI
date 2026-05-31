@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
+import { Bot, Zap, Rocket } from "lucide-react";
 
 export default function OnboardingPage() {
   const [step, setStep] = useState(1);
@@ -28,7 +29,9 @@ export default function OnboardingPage() {
       <div className="w-full max-w-lg bg-white rounded-2xl shadow-sm border border-gray-100 p-8 sm:p-10 transition-all">
         {step === 1 && (
           <div className="text-center animate-in fade-in zoom-in duration-300">
-            <div className="text-6xl mb-6">🤖</div>
+            <div className="w-20 h-20 rounded-2xl bg-[var(--color-brand-teal)]/10 flex items-center justify-center mx-auto mb-6">
+              <Bot className="w-10 h-10 text-[var(--color-brand-teal)]" />
+            </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-['Montserrat'] mb-4 text-[#00677d]">Apa itu AffiliateBrain?</h2>
             <p className="text-gray-600 mb-10 font-['Inter'] leading-relaxed">Asisten AI pribadi Anda yang dirancang khusus untuk affiliator TikTok Shop, Shopee Video, dan Reels Indonesia.</p>
             <div className="flex gap-4">
@@ -40,7 +43,9 @@ export default function OnboardingPage() {
 
         {step === 2 && (
           <div className="text-center animate-in fade-in zoom-in duration-300">
-            <div className="text-6xl mb-6">⚡</div>
+            <div className="w-20 h-20 rounded-2xl bg-amber-500/10 flex items-center justify-center mx-auto mb-6">
+              <Zap className="w-10 h-10 text-amber-500" />
+            </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-['Montserrat'] mb-4 text-[#00677d]">Cara Kerjanya</h2>
             <p className="text-gray-600 mb-10 font-['Inter'] leading-relaxed">Anda cukup masukkan nama atau link produk. Kami akan menganalisis audiens, mencari sudut pandang (angle) konten, dan membuatkan skrip utuh untuk Anda.</p>
             <div className="flex gap-4">
@@ -52,7 +57,9 @@ export default function OnboardingPage() {
 
         {step === 3 && (
           <div className="text-center animate-in fade-in zoom-in duration-300">
-            <div className="text-6xl mb-6">🚀</div>
+            <div className="w-20 h-20 rounded-2xl bg-purple-500/10 flex items-center justify-center mx-auto mb-6">
+              <Rocket className="w-10 h-10 text-purple-500" />
+            </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-['Montserrat'] mb-4 text-[#00677d]">Siap FYP?</h2>
             <p className="text-gray-600 mb-10 font-['Inter'] leading-relaxed">Dapatkan hook yang bikin penonton berhenti scroll, skrip yang natural, lengkap dengan hashtag dan rekomendasi jadwal posting.</p>
             <button 

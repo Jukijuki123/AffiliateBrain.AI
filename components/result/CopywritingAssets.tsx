@@ -20,7 +20,7 @@ export default function CopywritingAssets({ data }: { data: Copywriting }) {
     try {
       await navigator.clipboard.writeText(tag);
       setCopiedTag(tag);
-      showToast(`Hashtag ${tag} berhasil disalin! 🏷️`, "info");
+      showToast(`Hashtag ${tag} berhasil disalin!`, "info");
       setTimeout(() => setCopiedTag(null), 1500);
     } catch (err) {
       console.error(err);

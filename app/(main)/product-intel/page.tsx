@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductIntelForm from "@/components/form/ProductIntelForm";
 import { ProductIntelInput } from "@/lib/types";
 import { auth } from "@/lib/firebase";
-import { useAuth } from "@/hooks/useAuth";
+import LoadingOverlay from "@/components/shared/LoadingOverlay";
+import { Rocket, Check } from "lucide-react";
 
 const loadingMessages = [
   "Membaca data dan spesifikasi produk...",
@@ -13,23 +14,15 @@ const loadingMessages = [
   "Mengurai psikologi, trigger belanja, dan hambatan calon pembeli...",
   "Memetakan 10 pilar analisis kecerdasan produk...",
   "Menyusun hook video scroll-stopping untuk afiliator...",
-  "Hampir selesai, memformat laporan intelijen produk... 🔥",
+  "Hampir selesai, memformat laporan intelijen produk...",
 ];
 
 export default function ProductIntelPage() {
-  const { user } = useAuth();
   const [isGenerating, setIsGenerating] = useState(false);
-  const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
   const [globalError, setGlobalError] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    if (!isGenerating) return;
-    const timer = setInterval(() => {
-      setLoadingMsgIdx((prev) => (prev + 1) % loadingMessages.length);
-    }, 2000);
-    return () => clearInterval(timer);
-  }, [isGenerating]);
+
 
   const handleGenerate = async (data: ProductIntelInput) => {
     setIsGenerating(true);
@@ -37,7 +30,7 @@ export default function ProductIntelPage() {
 
     try {
       if (!auth || !auth.currentUser) {
-        throw new Error("Silakan login kembali atau periksa konfigurasi Firebase Anda.");
+        throw new Error("Sesi Anda telah berakhir. Silakan login kembali.");
       }
       const token = await auth.currentUser.getIdToken();
 
@@ -57,7 +50,7 @@ export default function ProductIntelPage() {
       } else {
         const text = await res.text();
         console.error("Non-JSON response received:", text);
-        throw new Error(`Server error: ${res.status}. Gagal memproses data.`);
+        throw new Error("Terjadi kesalahan pada server. Silakan coba lagi.");
       }
 
       if (!res.ok) {
@@ -78,7 +71,7 @@ export default function ProductIntelPage() {
       {/* Header */}
       <div className="mb-10 text-center lg:text-left">
         <span className="text-[10px] font-bold text-white bg-[var(--color-brand-teal)] px-3 py-1 rounded-full uppercase tracking-wider font-sans inline-block mb-3">
-          Fitur Premium Baru 🚀
+          Fitur Premium Baru <Rocket className="w-3.5 h-3.5 inline" />
         </span>
         <h1 className="text-3xl sm:text-4xl font-extrabold font-['Montserrat'] text-[var(--color-brand-teal)] leading-tight pb-1">
           Analisis Kecerdasan Produk AI
@@ -89,19 +82,7 @@ export default function ProductIntelPage() {
       </div>
 
       {isGenerating ? (
-        <div className="bg-white p-8 sm:p-16 rounded-3xl shadow-[0_4px_30px_rgba(0,103,125,0.06)] border border-gray-100 flex flex-col items-center justify-center min-h-[450px]">
-          {/* Pulsing ring and rotating indicator */}
-          <div className="relative mb-8">
-            <div className="absolute inset-0 rounded-full bg-[var(--color-brand-teal)]/10 animate-ping duration-1000" />
-            <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-[var(--color-brand-teal)] relative z-10" />
-          </div>
-          <p className="text-xl font-bold text-gray-800 text-center font-['Montserrat'] mb-2">
-            AI Sedang Menganalisis Produk...
-          </p>
-          <p className="text-sm text-gray-500 animate-pulse text-center font-['Inter'] max-w-md leading-relaxed">
-            {loadingMessages[loadingMsgIdx]}
-          </p>
-        </div>
+        <LoadingOverlay title="AI Sedang Menganalisis Produk..." messages={loadingMessages} />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           
@@ -136,15 +117,15 @@ export default function ProductIntelPage() {
               </p>
               <ul className="flex flex-col gap-3 text-xs text-gray-600 font-['Inter']">
                 <li className="flex gap-2">
-                  <span className="text-[var(--color-brand-teal)] font-bold">✓</span>
+                  <Check className="w-4 h-4 text-[var(--color-brand-teal)]" strokeWidth={3} />
                   <span><strong>Product DNA</strong>: Mengapa orang membeli secara impulsif.</span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="text-[var(--color-brand-teal)] font-bold">✓</span>
+                  <Check className="w-4 h-4 text-[var(--color-brand-teal)]" strokeWidth={3} />
                   <span><strong>Objection Mapping</strong>: Menangkis keraguan pembeli sebelum membeli.</span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="text-[var(--color-brand-teal)] font-bold">✓</span>
+                  <Check className="w-4 h-4 text-[var(--color-brand-teal)]" strokeWidth={3} />
                   <span><strong>Hook Generator</strong>: Formula video viral 3 detik pertama.</span>
                 </li>
               </ul>

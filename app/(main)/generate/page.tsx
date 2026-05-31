@@ -8,20 +8,11 @@ import { auth, db } from "@/lib/firebase";
 import { useAuth } from "@/hooks/useAuth";
 import { doc, getDoc } from "firebase/firestore";
 import OnboardingModal from "@/components/layout/OnboardingModal";
-
-const loadingMessages = [
-  "Lagi mikirin hook yang gak bisa di-skip...",
-  "Nanya ke database tren Indonesia dulu...",
-  "Nyusun skrip yang bikin FYP...",
-  "Mastiin CTAnya bikin orang langsung klik...",
-  "Pilih hashtag yang pas, bukan asal tag...",
-  "Hampir selesai, bentar lagi gaskeun! 🔥",
-];
+import LoadingOverlay from "@/components/shared/LoadingOverlay";
 
 export default function GeneratePage() {
   const { user } = useAuth();
   const [isGenerating, setIsGenerating] = useState(false);
-  const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
   const [globalError, setGlobalError] = useState("");
   const [showOnboarding, setShowOnboarding] = useState(false);
   const router = useRouter();
@@ -43,20 +34,14 @@ export default function GeneratePage() {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (!isGenerating) return;
-    const timer = setInterval(() => {
-      setLoadingMsgIdx((prev) => (prev + 1) % loadingMessages.length);
-    }, 2000);
-    return () => clearInterval(timer);
-  }, [isGenerating]);
+
 
   const handleGenerate = async (data: GenerationInput) => {
     setIsGenerating(true);
     setGlobalError("");
     
     try {
-      if (!auth || !auth.currentUser) throw new Error("Silakan login kembali atau periksa konfigurasi Firebase Anda.");
+      if (!auth || !auth.currentUser) throw new Error("Sesi Anda telah berakhir. Silakan login kembali.");
       const token = await auth.currentUser.getIdToken();
 
       const res = await fetch("/api/generate", {
@@ -75,7 +60,7 @@ export default function GeneratePage() {
       } else {
         const text = await res.text();
         console.error("Non-JSON response received:", text);
-        throw new Error(`Server error: ${res.status}. Periksa konfigurasi Firebase Admin / Gemini API Anda.`);
+        throw new Error("Terjadi kesalahan pada server. Silakan coba lagi.");
       }
       
       if (!res.ok) {
@@ -110,19 +95,7 @@ export default function GeneratePage() {
       </div>
 
       {isGenerating ? (
-        <div className="bg-white p-8 sm:p-16 rounded-3xl shadow-[0_4px_30px_rgba(0,103,125,0.06)] border border-gray-100 flex flex-col items-center justify-center min-h-[450px]">
-          {/* Pulsing ring and rotating indicator */}
-          <div className="relative mb-8">
-            <div className="absolute inset-0 rounded-full bg-[var(--color-brand-teal)]/10 animate-ping duration-1000" />
-            <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-[var(--color-brand-teal)] relative z-10" />
-          </div>
-          <p className="text-xl font-bold text-gray-800 text-center font-['Montserrat'] mb-2">
-            AI Sedang Menulis Strategi...
-          </p>
-          <p className="text-sm text-gray-500 animate-pulse text-center font-['Inter'] max-w-md leading-relaxed">
-            {loadingMessages[loadingMsgIdx]}
-          </p>
-        </div>
+        <LoadingOverlay />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           
